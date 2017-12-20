@@ -19,6 +19,13 @@ import sys
 
 from copy import deepcopy
 
+if sys.version_info > (3, 0):
+    # raw_input renamed in python3 to input
+    raw_input = input
+else:
+    # in python3 xrange doesnt exists
+    range = xrange
+
 # DECLARE ALL THE CONSTANTS
 BOARD_SIZE = 20
 # Extra two are for the walls, playing area will have size as BOARD_SIZE
@@ -69,39 +76,39 @@ def print_board(board, curr_piece, piece_pos, error_message=''):
     If there are any error messages then prints them to STDOUT as well
     """
     os.system('cls' if os.name=='nt' else 'clear')
-    print "Text mode version of the TETRIS game\n\n"
+    print("Text mode version of the TETRIS game\n\n")
 
     board_copy = deepcopy(board)
     curr_piece_size_x = len(curr_piece)
     curr_piece_size_y = len(curr_piece[0])
-    for i in xrange(curr_piece_size_x):
-        for j in xrange(curr_piece_size_y):
+    for i in range(curr_piece_size_x):
+        for j in range(curr_piece_size_y):
             board_copy[piece_pos[0]+i][piece_pos[1]+j] = curr_piece[i][j] | board[piece_pos[0]+i][piece_pos[1]+j]
 
     # Print the board to STDOUT
-    for i in xrange(EFF_BOARD_SIZE):
-        for j in xrange(EFF_BOARD_SIZE):
+    for i in range(EFF_BOARD_SIZE):
+        for j in range(EFF_BOARD_SIZE):
             if board_copy[i][j] == 1:
-                print "*",
+                print("*",)
             else:
-                print " ",
-        print ""
+                print(" ",)
+        print("")
 
-    print "Quick play instructions:\n"
-    print " - a (return): move piece left"
-    print " - d (return): move piece right"
-    print " - w (return): rotate piece counter clockwise"
-    print " - s (return): rotate piece clockwise"
+    print("Quick play instructions:\n")
+    print(" - a (return): move piece left")
+    print(" - d (return): move piece right")
+    print(" - w (return): rotate piece counter clockwise")
+    print(" - s (return): rotate piece clockwise")
 
     # In case user doesn't want to alter the position of the piece
     # and he doesn't want to rotate the piece either and just wants to move
     # in the downward direction, he can choose 'f'
-    print " - e (return): just move the piece downwards as is"
-    print " - q (return): to quit the game anytime"
+    print(" - e (return): just move the piece downwards as is")
+    print(" - q (return): to quit the game anytime")
 
     if error_message:
-        print error_message
-    print "Your move:",
+        print(error_message)
+    print("Your move:",)
 
 
 def init_board():
@@ -114,12 +121,12 @@ def init_board():
     --------
     board - the matrix with the walls of the gameplay
     """
-    board = [[0 for x in xrange(EFF_BOARD_SIZE)] for y in xrange(EFF_BOARD_SIZE)]
-    for i in xrange(EFF_BOARD_SIZE):
+    board = [[0 for x in range(EFF_BOARD_SIZE)] for y in range(EFF_BOARD_SIZE)]
+    for i in range(EFF_BOARD_SIZE):
         board[i][0] = 1
-    for i in xrange(EFF_BOARD_SIZE):
+    for i in range(EFF_BOARD_SIZE):
         board[EFF_BOARD_SIZE-1][i] = 1
-    for i in xrange(EFF_BOARD_SIZE):
+    for i in range(EFF_BOARD_SIZE):
         board[i][EFF_BOARD_SIZE-1] = 1
     return board
 
@@ -287,8 +294,8 @@ def merge_board_and_piece(board, curr_piece, piece_pos):
     """
     curr_piece_size_x = len(curr_piece)
     curr_piece_size_y = len(curr_piece[0])
-    for i in xrange(curr_piece_size_x):
-        for j in xrange(curr_piece_size_y):
+    for i in range(curr_piece_size_x):
+        for j in range(curr_piece_size_y):
             board[piece_pos[0]+i][piece_pos[1]+j] = curr_piece[i][j] | board[piece_pos[0]+i][piece_pos[1]+j]
 
     # After merging the board and piece
@@ -312,11 +319,11 @@ def merge_board_and_piece(board, curr_piece, piece_pos):
     # So decrease the count for that one
     filled_rows -= 1
 
-    for i in xrange(filled_rows):
+    for i in range(filled_rows):
         board.remove(filled_row)
 
     # Add extra empty rows on the top of the board to compensate for deleted rows
-    for i in xrange(filled_rows):
+    for i in range(filled_rows):
         board.insert(0, empty_row)
 
 
@@ -336,8 +343,8 @@ def overlap_check(board, curr_piece, piece_pos):
     """
     curr_piece_size_x = len(curr_piece)
     curr_piece_size_y = len(curr_piece[0])
-    for i in xrange(curr_piece_size_x):
-        for j in xrange(curr_piece_size_y):
+    for i in range(curr_piece_size_x):
+        for j in range(curr_piece_size_y):
             if board[piece_pos[0]+i][piece_pos[1]+j] == 1 and curr_piece[i][j] == 1:
                 return False
     return True
@@ -500,7 +507,7 @@ def play_game():
         elif player_move == NO_MOVE:
             do_move_down = True
         elif player_move == QUIT_GAME:
-            print "Bye. Thank you for playing!"
+            print("Bye. Thank you for playing!")
             sys.exit(0)
         else:
             ERR_MSG = "That is not a valid move!"
@@ -521,7 +528,7 @@ def play_game():
         # Get player move from STDIN
         player_move = raw_input()
 
-    print "GAME OVER!"
+    print("GAME OVER!")
 
 if __name__ == "__main__":
     play_game()
