@@ -19,13 +19,6 @@ import sys
 
 from copy import deepcopy
 
-if sys.version_info > (3, 0):
-    # raw_input renamed in python3 to input
-    raw_input = input
-else:
-    # in python3 xrange doesnt exists
-    range = xrange
-
 # DECLARE ALL THE CONSTANTS
 BOARD_SIZE = 20
 # Extra two are for the walls, playing area will have size as BOARD_SIZE
@@ -60,7 +53,6 @@ ROTATE_CLOCKWISE = 's'
 NO_MOVE = 'e'
 QUIT_GAME = 'q'
 
-
 def print_board(board, curr_piece, piece_pos, error_message=''):
     """
     Parameters:
@@ -89,9 +81,9 @@ def print_board(board, curr_piece, piece_pos, error_message=''):
     for i in range(EFF_BOARD_SIZE):
         for j in range(EFF_BOARD_SIZE):
             if board_copy[i][j] == 1:
-                print("*",)
+                print("*", end='')
             else:
-                print(" ",)
+                print(" ", end='')
         print("")
 
     print("Quick play instructions:\n")
@@ -476,7 +468,7 @@ def play_game():
     print_board(board, curr_piece, piece_pos)
 
     # Get player move from STDIN
-    player_move = raw_input()
+    player_move = input()
     while (not is_game_over(board, curr_piece, piece_pos)):
         ERR_MSG = ""
         do_move_down = False
@@ -526,7 +518,7 @@ def play_game():
         print_board(board, curr_piece, piece_pos, error_message=ERR_MSG)
 
         # Get player move from STDIN
-        player_move = raw_input()
+        player_move = input()
 
     print("GAME OVER!")
 
